@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PirAStack</title>
+<meta name="description" content="PirAStack, créateur de contenu. Tous mes réseaux au même endroit : YouTube, Twitch, TikTok, X, Instagram, Discord et plus.">
+<meta property="og:title" content="PirAStack">
+<meta property="og:description" content="Tous mes réseaux au même endroit.">
+<meta property="og:image" content="https://pirastack.fr/avatar.jpg">
+<meta name="theme-color" content="#07061a">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<style>
+  :root {
+    --ground: #07061a;
+    --surface: #15132e;
+    --ink: #f3f3f7;
+    --muted: #b9b4cc;
+    --accent: #f5b43c;
+    --accent-ink: #07061a;
+    --gutter: clamp(16px, 4vw, 48px);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font: 400 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    min-height: 100svh;
+  }
+  main {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: clamp(32px, 8vh, 96px) var(--gutter);
+    display: grid;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+  @media (min-width: 860px) {
+    main { grid-template-columns: 5fr 6fr; min-height: 100svh; align-items: center; }
+    .who { position: sticky; top: 48px; }
+  }
+  .who img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+  @media (max-width: 859px) {
+    .who { display: grid; grid-template-columns: 96px 1fr; gap: 20px; align-items: center; }
+    .who img { width: 96px; height: 96px; border-radius: 50%; }
+  }
+  h1 {
+    font-size: clamp(44px, 7vw, 88px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin-top: 28px;
+  }
+  @media (max-width: 859px) { h1 { margin-top: 0; } }
+  .who p { margin-top: 12px; color: var(--muted); }
+  .who .lede { font-size: 19px; color: var(--ink); max-width: 30ch; }
+
+  /* Entrée : chaque bloc monte en fondu, les liens en cascade */
+  @keyframes rise { from { opacity: 0; transform: translateY(24px); } }
+  .who img, h1, .lede, .links li, footer { animation: rise .6s cubic-bezier(.2,.7,.2,1) both; }
+  h1 { animation-delay: .08s; }
+  .lede { animation-delay: .16s; }
+  .links li:nth-child(1) { animation-delay: .2s; }
+  .links li:nth-child(2) { animation-delay: .27s; }
+  .links li:nth-child(3) { animation-delay: .34s; }
+  .links li:nth-child(4) { animation-delay: .41s; }
+  .links li:nth-child(5) { animation-delay: .48s; }
+  .links li:nth-child(6) { animation-delay: .55s; }
+  .links li:nth-child(7) { animation-delay: .62s; }
+  .links li:nth-child(8) { animation-delay: .69s; }
+  .links li:nth-child(9) { animation-delay: .76s; }
+  footer { animation-delay: .84s; }
+  .who a { color: var(--ink); }
+
+  ul { list-style: none; padding: 0; display: grid; gap: 10px; }
+  .links li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--surface);
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: 999px;
+    transition: background-color .18s ease, color .18s ease, transform .18s ease;
+  }
+  .links strong { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .links span { color: var(--muted); font-size: 15px; transition: color .18s ease; }
+  .links li a:hover, .links li a:focus-visible {
+    background: var(--accent);
+    color: var(--accent-ink);
+    transform: translateX(4px);
+  }
+  .links li a:hover span, .links li a:focus-visible span { color: var(--accent-ink); }
+  .links li a:active { transform: scale(.98); }
+  .links .main { background: var(--accent); color: var(--accent-ink); }
+  .links .main span { color: var(--accent-ink); }
+  .links .main:hover, .links .main:focus-visible { background: var(--ink); }
+  a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+  footer { margin-top: 32px; color: var(--muted); font-size: 15px; }
+  footer a { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .links li a { transition: none; }
+    .who img, h1, .lede, .links li, footer { animation: none; }
+    .links li a:hover, .links li a:focus-visible, .links li a:active { transform: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="who">
+    <img src="avatar.jpg" width="480" height="480" alt="Portrait de PirAStack, souriant">
+    <div>
+      <h1>PirAStack</h1>
+      <p class="lede">Créateur de contenu. Mes vidéos, mes lives et mes réseaux, tous au même endroit.</p>
+    </div>
+  </header>
+
+  <nav class="links" aria-label="Mes réseaux">
+    <ul>
+      <li><a class="main" href="https://www.youtube.com/@pirastack"><strong>YouTube</strong><span>Chaîne principale</span></a></li>
+      <li><a href="https://www.twitch.tv/pirastack"><strong>Twitch</strong><span>pirastack</span></a></li>
+      <li><a href="https://www.tiktok.com/@pirastack"><strong>TikTok</strong><span>@pirastack</span></a></li>
+      <li><a href="https://www.instagram.com/pirastack/"><strong>Instagram</strong><span>@pirastack</span></a></li>
+      <li><a href="https://x.com/pirastack"><strong>X</strong><span>@pirastack</span></a></li>
+      <li><a href="https://x.com/pirastacktv"><strong>X · TV</strong><span>@pirastacktv</span></a></li>
+      <li><a href="https://discord.gg/pirastack"><strong>Discord</strong><span>Rejoindre le serveur</span></a></li>
+      <li><a href="https://www.facebook.com/Pirastack"><strong>Facebook</strong><span>Pirastack</span></a></li>
+      <li><a href="https://www.snapchat.com/@pirastance"><strong>Snapchat</strong><span>@pirastance</span></a></li>
+    </ul>
+    <footer>
+      <p>Contact pro : <a href="mailto:contact@pirastack.fr">contact@pirastack.fr</a></p>
+    </footer>
+  </nav>
+</main>
+</body>
+</html>
