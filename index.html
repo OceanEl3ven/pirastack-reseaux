@@ -3,147 +3,272 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PirAStack</title>
-<meta name="description" content="PirAStack, créateur de contenu. Tous mes réseaux au même endroit : YouTube, Twitch, TikTok, X, Instagram, Discord et plus.">
-<meta property="og:title" content="PirAStack">
-<meta property="og:description" content="Tous mes réseaux au même endroit.">
-<meta property="og:image" content="https://pirastack.fr/avatar.jpg">
-<meta name="theme-color" content="#07061a">
+<title>PirAStack · Réseaux</title>
+<meta name="description" content="PirAStack, créateur de contenu Fortnite. Mes vidéos, mes lives Twitch et tous mes réseaux au même endroit.">
+<meta property="og:title" content="PirAStack · Réseaux">
+<meta property="og:description" content="Mes vidéos, mes lives et tous mes réseaux au même endroit.">
+<meta property="og:image" content="https://pirastack.fr/img/astronaute.webp">
+<meta name="theme-color" content="#14062e">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,400..700;1,800..900&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/fond.webp">
 <style>
   :root {
-    --ground: #07061a;
-    --surface: #15132e;
-    --ink: #f3f3f7;
-    --muted: #b9b4cc;
-    --accent: #f5b43c;
-    --accent-ink: #07061a;
-    --gutter: clamp(16px, 4vw, 48px);
+    --night: #14062e;
+    --ink: #ffffff;
+    --muted: #cfc6ee;
+    --cyan: #00e5f0;
+    --violet: #6a00ff;
+    --magenta: #ff0a8a;
+    --brand: linear-gradient(120deg, var(--cyan), var(--violet) 50%, var(--magenta));
+    --gutter: clamp(16px, 4vw, 40px);
+    --radius: 28px;
   }
   * { box-sizing: border-box; margin: 0; }
+  html { background: var(--night); }
   body {
-    background: var(--ground);
     color: var(--ink);
-    font: 400 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font: 400 17px/1.5 "Saira", system-ui, sans-serif;
     min-height: 100svh;
+    overflow-x: hidden;
   }
-  main {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: clamp(32px, 8vh, 96px) var(--gutter);
+  a { color: inherit; }
+
+  /* ---- Ciel : l'astronaute en fond fixe, qui dérive lentement ---- */
+  .sky { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+  .sky img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: 50% 40%;
+    animation: drift 40s ease-in-out infinite alternate;
+  }
+  .sky::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(20,6,46,.15), rgba(20,6,46,.7) 70%),
+      linear-gradient(rgba(20,6,46,.25), rgba(20,6,46,.75));
+  }
+  @keyframes drift { from { transform: scale(1.05); } to { transform: scale(1.15) translate(-1.5%, 1%); } }
+
+  /* ---- Verre liquide ---- */
+  .glass {
+    position: relative;
+    background: linear-gradient(140deg, rgba(255,255,255,.16), rgba(255,255,255,.04) 60%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    backdrop-filter: blur(22px) saturate(170%);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: var(--radius);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.45),
+      inset 0 -1px 0 rgba(255,255,255,.08),
+      0 24px 60px rgba(8,0,30,.45);
+    isolation: isolate;
+  }
+  /* reflet spéculaire en haut à gauche */
+  .glass::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(120% 60% at 0% 0%, rgba(255,255,255,.22), transparent 55%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(24px, 5vw, 64px) var(--gutter) 0; }
+  section { margin-top: clamp(40px, 7vw, 88px); }
+  h2 {
+    font-style: italic;
+    font-weight: 900;
+    font-size: clamp(28px, 4.2vw, 44px);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .ico { width: 24px; height: 24px; fill: currentColor; flex: none; }
+
+  /* ---- En-tête ---- */
+  header {
     display: grid;
-    gap: clamp(32px, 6vw, 80px);
-    align-items: start;
+    grid-template-columns: auto 1fr;
+    gap: clamp(20px, 4vw, 48px);
+    align-items: center;
+    padding: clamp(20px, 4vw, 40px);
   }
-  @media (min-width: 860px) {
-    main { grid-template-columns: 5fr 6fr; min-height: 100svh; align-items: center; }
-    .who { position: sticky; top: 48px; }
+  @media (max-width: 600px) {
+    header { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .lede { margin-inline: auto; }
   }
-  .who img {
-    display: block;
-    width: 100%;
-    height: auto;
+  .avatar {
+    width: clamp(96px, 16vw, 168px);
     aspect-ratio: 1;
-    object-fit: cover;
+    padding: 4px;
+    border-radius: 50%;
+    background: var(--brand);
+    box-shadow: 0 0 40px rgba(0,229,240,.35), 0 0 60px rgba(255,10,138,.25);
   }
-  @media (max-width: 859px) {
-    .who { display: grid; grid-template-columns: 96px 1fr; gap: 20px; align-items: center; }
-    .who img { width: 96px; height: 96px; border-radius: 50%; }
-  }
-  h1 {
-    font-size: clamp(44px, 7vw, 88px);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 0.95;
-    margin-top: 28px;
-  }
-  @media (max-width: 859px) { h1 { margin-top: 0; } }
-  .who p { margin-top: 12px; color: var(--muted); }
-  .who .lede { font-size: 19px; color: var(--ink); max-width: 30ch; }
+  .avatar img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid var(--night); }
+  h1 { line-height: 0; }
+  h1 img { width: min(100%, 460px); height: auto; filter: drop-shadow(0 8px 24px rgba(0,229,240,.25)); }
+  .lede { margin-top: 12px; font-size: clamp(17px, 1.7vw, 20px); color: var(--muted); max-width: 40ch; }
+  .lede strong { color: var(--ink); font-weight: 600; }
 
-  /* Entrée : chaque bloc monte en fondu, les liens en cascade */
-  @keyframes rise { from { opacity: 0; transform: translateY(24px); } }
-  .who img, h1, .lede, .links li, footer { animation: rise .6s cubic-bezier(.2,.7,.2,1) both; }
-  h1 { animation-delay: .08s; }
-  .lede { animation-delay: .16s; }
-  .links li:nth-child(1) { animation-delay: .2s; }
-  .links li:nth-child(2) { animation-delay: .27s; }
-  .links li:nth-child(3) { animation-delay: .34s; }
-  .links li:nth-child(4) { animation-delay: .41s; }
-  .links li:nth-child(5) { animation-delay: .48s; }
-  .links li:nth-child(6) { animation-delay: .55s; }
-  .links li:nth-child(7) { animation-delay: .62s; }
-  .links li:nth-child(8) { animation-delay: .69s; }
-  .links li:nth-child(9) { animation-delay: .76s; }
-  footer { animation-delay: .84s; }
-  .who a { color: var(--ink); }
-
-  ul { list-style: none; padding: 0; display: grid; gap: 10px; }
-  .links li a {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
-    padding: 20px 24px;
-    background: var(--surface);
-    color: var(--ink);
+  /* ---- Réseaux ---- */
+  .grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  @media (min-width: 760px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+  .grid .big { grid-column: span 2; }
+  .tile {
+    display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
+    height: 100%; min-height: 150px; padding: 20px;
     text-decoration: none;
-    border-radius: 999px;
-    transition: background-color .18s ease, color .18s ease, transform .18s ease;
+    transition: transform .25s cubic-bezier(.2,.7,.2,1), border-color .25s ease, box-shadow .25s ease;
   }
-  .links strong { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
-  .links span { color: var(--muted); font-size: 15px; transition: color .18s ease; }
-  .links li a:hover, .links li a:focus-visible {
-    background: var(--accent);
-    color: var(--accent-ink);
-    transform: translateX(4px);
+  .tile .badge {
+    display: grid; place-items: center;
+    width: 44px; height: 44px; border-radius: 14px;
+    background: var(--brand);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
   }
-  .links li a:hover span, .links li a:focus-visible span { color: var(--accent-ink); }
-  .links li a:active { transform: scale(.98); }
-  .links .main { background: var(--accent); color: var(--accent-ink); }
-  .links .main span { color: var(--accent-ink); }
-  .links .main:hover, .links .main:focus-visible { background: var(--ink); }
-  a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .tile strong { display: block; font-size: 19px; font-weight: 700; }
+  .tile small { display: block; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+  .tile .count { display: block; font-style: italic; font-weight: 900; font-size: clamp(26px, 3vw, 34px); line-height: 1; margin-bottom: 6px; }
+  .big .tile { min-height: 190px; }
+  .big .count { font-size: clamp(34px, 5vw, 52px); }
+  .tile:hover, .tile:focus-visible {
+    transform: translateY(-4px);
+    border-color: rgba(0,229,240,.7);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 0 0 1px rgba(255,10,138,.35), 0 20px 50px rgba(106,0,255,.45);
+  }
+  .tile:active { transform: scale(.98); }
 
-  footer { margin-top: 32px; color: var(--muted); font-size: 15px; }
+  /* ---- Vidéo & live ---- */
+  .duo { display: grid; gap: 16px; }
+  @media (min-width: 980px) { .duo { grid-template-columns: 1fr 1fr; } }
+  .panel { padding: 16px; }
+  .panel .head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 4px 6px 14px; }
+  .panel h2 { font-size: clamp(22px, 2.6vw, 28px); margin: 0; }
+  .panel .head a { color: var(--muted); font-size: 15px; text-underline-offset: 3px; }
+  .panel .head a:hover { color: var(--cyan); }
+  .frame { position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: rgba(0,0,0,.4); }
+  .frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .live-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--magenta); margin-right: 10px; vertical-align: middle; box-shadow: 0 0 0 0 rgba(255,10,138,.7); animation: pulse 1.8s infinite; }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(255,10,138,0); } 100% { box-shadow: 0 0 0 0 rgba(255,10,138,0); } }
+
+  /* ---- Discord ---- */
+  .discord { display: grid; overflow: hidden; }
+  @media (min-width: 760px) { .discord { grid-template-columns: 1.3fr 1fr; } }
+  .discord .text { padding: clamp(28px, 5vw, 56px); align-self: center; }
+  .discord p { color: var(--muted); max-width: 40ch; margin-bottom: 28px; }
+  .discord img { width: 100%; height: 100%; min-height: 240px; max-height: 420px; object-fit: cover; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 28px; border-radius: 999px;
+    background: var(--brand); background-size: 160% 100%;
+    color: #fff; font-weight: 700; font-size: 18px; text-decoration: none;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 10px 30px rgba(255,10,138,.35);
+    transition: background-position .4s ease, transform .2s ease;
+  }
+  .btn:hover, .btn:focus-visible { background-position: 100% 0; transform: translateY(-2px); }
+  .btn:active { transform: scale(.97); }
+
+  footer {
+    margin-top: clamp(40px, 7vw, 88px);
+    padding: 24px 0 40px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    color: var(--muted); font-size: 15px;
+  }
+  footer .sign { display: flex; align-items: center; gap: 12px; }
+  footer img { width: 44px; height: auto; }
   footer a { color: var(--ink); }
+  a:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+
+  /* Entrée : chaque bloc monte en fondu, les réseaux en cascade */
+  @keyframes rise { from { opacity: 0; transform: translateY(24px); } }
+  header, .grid li, .duo > *, .discord { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
+  .grid li:nth-child(1) { animation-delay: .12s; }
+  .grid li:nth-child(2) { animation-delay: .18s; }
+  .grid li:nth-child(3) { animation-delay: .24s; }
+  .grid li:nth-child(4) { animation-delay: .3s; }
+  .grid li:nth-child(5) { animation-delay: .36s; }
+  .grid li:nth-child(6) { animation-delay: .42s; }
+  .grid li:nth-child(7) { animation-delay: .48s; }
+  .grid li:nth-child(8) { animation-delay: .54s; }
+  .duo > * { animation-delay: .5s; }
+  .discord { animation-delay: .6s; }
 
   @media (prefers-reduced-motion: reduce) {
-    .links li a { transition: none; }
-    .who img, h1, .lede, .links li, footer { animation: none; }
-    .links li a:hover, .links li a:focus-visible, .links li a:active { transform: none; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
   }
 </style>
 </head>
 <body>
-<main>
-  <header class="who">
-    <img src="avatar.jpg" width="480" height="480" alt="Portrait de PirAStack, souriant">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-youtube" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></symbol><symbol id="i-twitch" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></symbol><symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></symbol><symbol id="i-instagram" viewBox="0 0 24 24"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></symbol><symbol id="i-discord" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></symbol><symbol id="i-facebook" viewBox="0 0 24 24"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></symbol><symbol id="i-snapchat" viewBox="0 0 24 24"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.063-.052-.15-.055-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></symbol></svg>
+<div class="sky" aria-hidden="true"><img src="img/fond.webp" alt=""></div>
+
+<div class="wrap">
+  <header class="glass">
+    <div class="avatar"><img src="avatar.jpg" width="480" height="480" alt="Portrait de PirAStack"></div>
     <div>
-      <h1>PirAStack</h1>
-      <p class="lede">Créateur de contenu. Mes vidéos, mes lives et mes réseaux, tous au même endroit.</p>
+      <h1><img src="img/logo-pirastack.webp" width="800" height="317" alt="PirAStack"></h1>
+      <p class="lede"><strong>Créateur de contenu Fortnite.</strong> Mes vidéos, mes lives et tous mes réseaux au même endroit.</p>
     </div>
   </header>
 
-  <nav class="links" aria-label="Mes réseaux">
-    <ul>
-      <li><a class="main" href="https://www.youtube.com/@pirastack"><strong>YouTube</strong><span>Chaîne principale</span></a></li>
-      <li><a href="https://www.twitch.tv/pirastack"><strong>Twitch</strong><span>pirastack</span></a></li>
-      <li><a href="https://www.tiktok.com/@pirastack"><strong>TikTok</strong><span>@pirastack</span></a></li>
-      <li><a href="https://www.instagram.com/pirastack/"><strong>Instagram</strong><span>@pirastack</span></a></li>
-      <li><a href="https://x.com/pirastack"><strong>X</strong><span>@pirastack</span></a></li>
-      <li><a href="https://x.com/pirastacktv"><strong>X · TV</strong><span>@pirastacktv</span></a></li>
-      <li><a href="https://discord.gg/pirastack"><strong>Discord</strong><span>Rejoindre le serveur</span></a></li>
-      <li><a href="https://www.facebook.com/Pirastack"><strong>Facebook</strong><span>Pirastack</span></a></li>
-      <li><a href="https://www.snapchat.com/@pirastance"><strong>Snapchat</strong><span>@pirastance</span></a></li>
+  <section aria-labelledby="t-reseaux">
+    <h2 id="t-reseaux">Mes réseaux</h2>
+    <ul class="grid">
+      <li class="big"><a class="tile glass" href="https://www.youtube.com/@pirastack"><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-youtube"/></svg></span><span><span class="count">288 k</span><strong>YouTube</strong><small>Ma chaîne principale</small></span></a></li>
+      <li class="big"><a class="tile glass" href="https://www.twitch.tv/pirastack"><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-twitch"/></svg></span><span><span class="count">244,7 k</span><strong>Twitch</strong><small>Les lives, c'est ici</small></span></a></li>
+      <li><a class="tile glass" href="https://www.tiktok.com/@pirastack"><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-tiktok"/></svg></span><span><span class="count">1 M</span><strong>TikTok</strong><small>@pirastack</small></span></a></li>
+      <li><a class="tile glass" href="https://www.instagram.com/pirastack/"><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-instagram"/></svg></span><span><strong>Instagram</strong><small>@pirastack</small></span></a></li>
+      <li><a class="tile glass" href="https://x.com/pirastack"><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg></span><span><span class="count">21,9 k</span><strong>X</strong><small>@pirastack</small></span></a></li>
+      <li><a class="tile glass" href="https://x.com/pirastacktv"><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg></span><span><span class="count">778</span><strong>X · TV</strong><small>@pirastacktv</small></span></a></li>
+      <li><a class="tile glass" href="https://www.facebook.com/Pirastack"><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-facebook"/></svg></span><span><span class="count">11,5 k</span><strong>Facebook</strong><small>Pirastack</small></span></a></li>
+      <li><a class="tile glass" href="https://www.snapchat.com/@pirastance"><span class="badge"><svg class="ico" aria-hidden="true"><use href="#i-snapchat"/></svg></span><span><strong>Snapchat</strong><small>@pirastance</small></span></a></li>
     </ul>
-    <footer>
-      <p>Contact pro : <a href="mailto:contact@pirastack.fr">contact@pirastack.fr</a></p>
-    </footer>
-  </nav>
-</main>
+  </section>
+
+  <section class="duo" aria-label="Vidéo et live">
+    <div class="panel glass">
+      <div class="head">
+        <h2>Dernière vidéo</h2>
+        <a href="https://www.youtube.com/@pirastack/videos">Toutes les vidéos</a>
+      </div>
+      <div class="frame">
+        <!-- Liste des derniers uploads de la chaîne : se met à jour toute seule -->
+        <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=UU_NFNQF3Ti2wNQqLxP9Q4AA" title="Dernières vidéos YouTube de PirAStack" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+    </div>
+    <div class="panel glass">
+      <div class="head">
+        <h2><span class="live-dot" aria-hidden="true"></span>Live Twitch</h2>
+        <a href="https://www.twitch.tv/pirastack">Ouvrir sur Twitch</a>
+      </div>
+      <div class="frame">
+        <!-- Twitch exige la liste des domaines qui intègrent le lecteur (parent=) -->
+        <iframe src="https://player.twitch.tv/?channel=pirastack&parent=pirastack.fr&parent=www.pirastack.fr&parent=localhost&autoplay=false&muted=true" title="Live Twitch de PirAStack" loading="lazy" allow="fullscreen"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="discord glass" aria-labelledby="t-discord">
+    <div class="text">
+      <h2 id="t-discord">Rejoins le Discord</h2>
+      <p>La commu, les annonces de lives et les parties entre abonnés. Viens dire bonjour.</p>
+      <a class="btn" href="https://discord.gg/pirastack"><svg class="ico" aria-hidden="true"><use href="#i-discord"/></svg>Rejoindre le serveur</a>
+    </div>
+    <img src="img/astronaute.webp" width="720" height="720" alt="L'astronaute PirAStack dans les nuages" loading="lazy">
+  </section>
+
+  <footer>
+    <div class="sign"><img src="img/logo-ps.webp" width="256" height="150" alt=""><span>© PirAStack</span></div>
+    <p>Contact pro : <a href="mailto:contact@pirastack.fr">contact@pirastack.fr</a></p>
+  </footer>
+</div>
 </body>
 </html>
