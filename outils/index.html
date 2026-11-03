@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outils gratuits pour créateurs · PirAStack</title>
+<meta name="description" content="Des outils gratuits pour tes vidéos : les zones sûres de TikTok, des Reels et des Shorts, et un message de chat en PNG. Sans compte, rien n’est envoyé.">
+<meta property="og:title" content="Outils gratuits pour créateurs · PirAStack">
+<meta property="og:image" content="https://pirastack.fr/img/astronaute.webp">
+<meta name="theme-color" content="#14062e">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,400..700;1,800..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="outils.css">
+<style>
+  .cards { display: grid; gap: 16px; margin-top: clamp(24px, 4vw, 40px); }
+  @media (min-width: 760px) { .cards { grid-template-columns: 1fr 1fr; } }
+  .card { display: flex; flex-direction: column; gap: 14px; padding: clamp(22px, 3vw, 32px); text-decoration: none; transition: transform .25s cubic-bezier(.2,.7,.2,1), border-color .25s ease; }
+  .card:hover, .card:focus-visible { transform: translateY(-4px); border-color: rgba(0,229,240,.7); }
+  .card:active { transform: scale(.98); }
+  .card .badge { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; background: var(--brand); font-size: 26px; box-shadow: inset 0 1px 0 rgba(255,255,255,.5); }
+  .card strong { font-style: italic; font-weight: 900; font-size: clamp(24px, 3vw, 30px); text-transform: uppercase; line-height: 1.05; }
+  .card p { color: var(--muted); }
+  .card span.go { margin-top: auto; font-weight: 700; color: var(--cyan); }
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"><img src="../img/fond.webp" alt=""></div>
+<div class="wrap">
+  <nav class="top" aria-label="Navigation">
+    <a href="/" aria-label="Accueil de PirAStack"><img src="../img/logo-pirastack.webp" width="800" height="317" alt="PirAStack"></a>
+    <a href="/">Mes réseaux</a>
+  </nav>
+  <h1>Outils gratuits</h1>
+  <p class="lede"><strong>Ceux dont je me sers pour mes vidéos</strong>, pour toi aussi. Sans compte, et rien de ce que tu mets dedans ne quitte ton appareil.</p>
+
+  <div class="cards">
+    <a class="card glass" href="zones-sures.html">
+      <span class="badge" aria-hidden="true">📱</span>
+      <strong>Zones sûres</strong>
+      <p>Ton texte ou ton visage est-il caché par les boutons de TikTok, des Reels ou des Shorts ? Pose ta vidéo, tu le vois tout de suite.</p>
+      <span class="go">Ouvrir l’outil →</span>
+    </a>
+    <a class="card glass" href="message-chat.html">
+      <span class="badge" aria-hidden="true">💬</span>
+      <strong>Message du chat en PNG</strong>
+      <p>Un message de ton chat en image au fond transparent, à poser au début d’un clip ou sur une réaction.</p>
+      <span class="go">Ouvrir l’outil →</span>
+    </a>
+  </div>
+
+  <footer>
+    <div class="sign"><img src="../img/logo-ps.webp" width="256" height="150" alt=""><span>© PirAStack · <a href="/">pirastack.fr</a></span></div>
+    <p>Contact pro : <a href="mailto:contact@pirastack.fr">contact@pirastack.fr</a></p>
+  </footer>
+</div>
+</body>
+</html>

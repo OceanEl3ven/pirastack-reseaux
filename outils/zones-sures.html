@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zones sûres TikTok, Reels et Shorts · PirAStack</title>
+<meta name="description" content="Vérifie que ton texte et ton visage ne finissent pas sous les boutons de TikTok, des Reels Instagram ou des YouTube Shorts. Gratuit, ta vidéo reste sur ton appareil.">
+<meta property="og:title" content="Zones sûres TikTok, Reels et Shorts">
+<meta property="og:image" content="https://pirastack.fr/img/astronaute.webp">
+<meta name="theme-color" content="#14062e">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,400..700;1,800..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="outils.css">
+<style>
+  .drop { position: relative; display: grid !important; place-items: center; gap: 4px; text-align: center; padding: 22px; border-radius: 20px; border: 2px dashed rgba(255,255,255,.3); background: rgba(10,4,30,.4); cursor: pointer; }
+  .drop.over { border-color: var(--cyan); background: rgba(0,229,240,.08); }
+  .drop input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .drop small { color: var(--muted); font-weight: 400; }
+  .stage { display: grid; place-items: center; padding: clamp(14px, 3vw, 24px); }
+  .phone { position: relative; width: min(100%, 360px, calc(70svh * 9 / 16)); aspect-ratio: 9 / 16; border-radius: 26px; overflow: hidden; background: #000; border: 6px solid rgba(255,255,255,.1); box-shadow: 0 30px 70px rgba(0,0,0,.55); }
+  .phone img, .phone video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .phone svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .phone .empty { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; color: var(--muted); }
+  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-right: 6px; vertical-align: -2px; }
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"><img src="../img/fond.webp" alt=""></div>
+<div class="wrap">
+  <nav class="top" aria-label="Navigation">
+    <a href="/" aria-label="Accueil de PirAStack"><img src="../img/logo-pirastack.webp" width="800" height="317" alt="PirAStack"></a>
+    <a href="./">Tous les outils</a>
+  </nav>
+  <h1>Zones sûres</h1>
+  <p class="lede"><strong>Ton texte est-il caché par les boutons ?</strong> Pose ton image ou ta vidéo, choisis l’appli : les zones que l’interface recouvre s’affichent par-dessus. Ta vidéo reste sur ton appareil, rien n’est envoyé.</p>
+
+  <div class="tool">
+    <div class="panel glass">
+      <label class="drop" id="drop">
+        <input type="file" id="file" accept="image/*,video/*" aria-describedby="dropTip">
+        <span>📱 Choisis ton image ou ta vidéo</span>
+        <small id="dropTip">ou glisse-la ici (format vertical 9:16 de préférence)</small>
+      </label>
+      <div>
+        <h2>L’appli</h2>
+        <div class="seg" role="group" aria-label="L’appli à vérifier">
+          <button type="button" data-z="tiktok" aria-pressed="true">TikTok</button>
+          <button type="button" data-z="reels" aria-pressed="false">Reels Instagram</button>
+          <button type="button" data-z="shorts" aria-pressed="false">YouTube Shorts</button>
+        </div>
+      </div>
+      <label class="check"><input type="checkbox" id="show" checked> Montrer les zones</label>
+      <div class="legend" aria-hidden="true"><span><i style="background:rgba(255,10,138,.55)"></i>Recouvert par l’appli</span><span><i style="border:2px dashed #00e5f0"></i>Zone sûre</span></div>
+      <button type="button" class="btn" id="dl">Télécharger le gabarit (PNG 1080 × 1920)</button>
+      <p class="note" id="info" aria-live="polite"></p>
+      <!-- Sources (relevées le 3 novembre 2026) : TikTok, gabarit In-Feed de l'aide TikTok Ads (720×1280, ×1,5) ; Meta, guide des pubs Reels (14 % en haut, 35 % en bas, 6 % sur les côtés) ;
+           Google, image des zones sûres des pubs vidéo verticales (1080×1920). Recoupées par https://www.socialync.io/tools/safe-zones et https://www.upload-post.com/tools/safe-zone-checker/
+           (colonne des boutons de TikTok : 180 px mesurés par Socialync). -->
+      <p class="note">Marges relevées le 3 novembre 2026 d’après les gabarits publiés par TikTok, Meta et Google pour leurs pubs (aucun ne publie de chiffres pour les vidéos des créateurs). Les applis changent souvent et une longue légende descend plus bas : vérifie toujours sur ton téléphone.</p>
+    </div>
+    <div class="stage glass">
+      <div class="phone" id="phone">
+        <p class="empty" id="empty">Ton image ou ta vidéo s’affiche ici</p>
+        <svg id="zones" viewBox="0 0 1080 1920" preserveAspectRatio="none" role="img" aria-label="Les zones recouvertes par l’appli"></svg>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="sign"><img src="../img/logo-ps.webp" width="256" height="150" alt=""><span>© PirAStack · <a href="/">pirastack.fr</a></span></div>
+    <p>Un outil gratuit, sans compte et sans envoi.</p>
+  </footer>
+</div>
+<script>
+// Les marges de chaque appli sur une image de 1080 × 1920 (voir les sources plus haut) ; col = la colonne des boutons à droite.
+const Z = {
+  tiktok: { n: 'TikTok', top: 240, bottom: 660, left: 120, right: 120, col: { w: 180, y: 840 } },
+  reels: { n: 'Reels Instagram', top: 269, bottom: 672, left: 65, right: 65 },
+  shorts: { n: 'YouTube Shorts', top: 288, bottom: 672, left: 48, right: 192 }
+};
+const W = 1080, H = 1920, $ = s => document.querySelector(s);
+let cur = 'tiktok', url = null;
+
+// Les rectangles recouverts par l'appli, et le cadre sûr, dans l'image de 1080 × 1920
+function areas(z) {
+  const mid = H - z.top - z.bottom, r = [
+    [0, 0, W, z.top, 'Barre du haut'], [0, H - z.bottom, W, z.bottom, 'Légende, pseudo, musique'],
+    [0, z.top, z.left, mid, ''], [W - z.right, z.top, z.right, mid, '']];
+  if (z.col) r.push([W - z.col.w, z.col.y, z.col.w, H - z.bottom - z.col.y, 'Boutons']);
+  return { r, safe: [z.left, z.top, W - z.left - Math.max(z.right, z.col?.w || 0), mid] };
+}
+function paint() {
+  const z = Z[cur], { r, safe } = areas(z), on = $('#show').checked;
+  $('#zones').innerHTML = on ? r.map(([x, y, w, h, t]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="rgba(255,10,138,.42)"/>` +
+    (t ? `<text x="${x + w / 2}" y="${y + h / 2}" fill="#fff" font-size="${t === 'Boutons' ? 34 : 44}" font-weight="700" text-anchor="middle" dominant-baseline="middle" ${t === 'Boutons' ? `transform="rotate(-90 ${x + w / 2} ${y + h / 2})"` : ''} font-family="Saira, system-ui, sans-serif">${t}</text>` : '')).join('') +
+    `<rect x="${safe[0]}" y="${safe[1]}" width="${safe[2]}" height="${safe[3]}" fill="none" stroke="#00e5f0" stroke-width="6" stroke-dasharray="24 16"/>` : '';
+  $('#info').textContent = `${z.n} : garde ton texte et ton visage dans le cadre pointillé (${safe[2]} × ${safe[3]} px sur 1080 × 1920).`;
+}
+function show(file) {
+  if (!file || !/^(image|video)\//.test(file.type)) return;
+  if (url) URL.revokeObjectURL(url);
+  url = URL.createObjectURL(file);
+  $('#phone').querySelector('img, video')?.remove();
+  const v = file.type.startsWith('video'), el = document.createElement(v ? 'video' : 'img');
+  if (v) Object.assign(el, { muted: true, loop: true, autoplay: true, playsInline: true, controls: false }); else el.alt = 'Ton image';
+  el.src = url;
+  $('#phone').prepend(el);
+  $('#empty').hidden = true;
+}
+document.querySelectorAll('[data-z]').forEach(b => b.addEventListener('click', () => {
+  cur = b.dataset.z;
+  document.querySelectorAll('[data-z]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  paint();
+}));
+$('#show').addEventListener('change', paint);
+$('#file').addEventListener('change', e => show(e.target.files[0]));
+const drop = $('#drop');
+['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(t => drop.addEventListener(t, () => drop.classList.remove('over')));
+drop.addEventListener('drop', e => { e.preventDefault(); show(e.dataTransfer.files[0]); });
+document.getElementById('phone').addEventListener('click', () => $('#phone video')?.[$('#phone video').paused ? 'play' : 'pause']());
+
+// Le gabarit à poser dans ton logiciel de montage : les mêmes zones, sur un fond transparent
+$('#dl').addEventListener('click', () => {
+  const z = Z[cur], { r, safe } = areas(z), c = document.createElement('canvas'), x = c.getContext('2d');
+  c.width = W; c.height = H;
+  x.fillStyle = 'rgba(255,10,138,.42)';
+  for (const [a, b, w, h] of r) x.fillRect(a, b, w, h);
+  x.setLineDash([24, 16]); x.lineWidth = 6; x.strokeStyle = '#00e5f0'; x.strokeRect(...safe);
+  x.fillStyle = '#fff'; x.font = '700 44px Saira, system-ui, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle';
+  for (const [a, b, w, h, t] of r) if (t && t !== 'Boutons') x.fillText(t, a + w / 2, b + h / 2);
+  c.toBlob(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `zones-sures-${cur}-1080x1920.png`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); });
+});
+paint();
+</script>
+</body>
+</html>

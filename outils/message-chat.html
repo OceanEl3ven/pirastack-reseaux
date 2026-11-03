@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Message du chat en PNG · PirAStack</title>
+<meta name="description" content="Transforme un message de ton chat en image au fond transparent, prête à poser sur tes vidéos. Gratuit, sans compte, tout reste sur ton appareil.">
+<meta property="og:title" content="Message du chat en PNG">
+<meta property="og:image" content="https://pirastack.fr/img/astronaute.webp">
+<meta name="theme-color" content="#14062e">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,400..700;1,800..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="outils.css">
+<style>
+  .stage { padding: clamp(14px, 3vw, 24px); display: grid; gap: 14px; }
+  /* le damier montre le fond transparent */
+  .board { border-radius: 18px; padding: clamp(14px, 4vw, 32px); background: repeating-conic-gradient(#2a2340 0% 25%, #1c1630 0% 50%) 0 0 / 24px 24px; display: grid; place-items: center; }
+  .board canvas { display: block; max-width: 100%; height: auto; }
+  .swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+  .swatches button { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,.3); cursor: pointer; }
+  .swatches button[aria-pressed="true"] { border-color: #fff; outline: 2px solid var(--cyan); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"><img src="../img/fond.webp" alt=""></div>
+<div class="wrap">
+  <nav class="top" aria-label="Navigation">
+    <a href="/" aria-label="Accueil de PirAStack"><img src="../img/logo-pirastack.webp" width="800" height="317" alt="PirAStack"></a>
+    <a href="./">Tous les outils</a>
+  </nav>
+  <h1>Message du chat en PNG</h1>
+  <p class="lede"><strong>Un message de ton chat, en image au fond transparent</strong>, à poser au début d’un clip ou sur une réaction. Tout se fait sur ton appareil.</p>
+
+  <div class="tool">
+    <div class="panel glass">
+      <div class="row">
+        <label>Pseudo <input class="field" id="who" maxlength="25" value="PirAStack" autocomplete="off"></label>
+        <label style="flex:0 0 auto">Couleur <input type="color" id="col" value="#a970ff" aria-label="La couleur du pseudo"></label>
+      </div>
+      <div class="swatches" role="group" aria-label="Couleurs toutes prêtes"></div>
+      <label>Message <textarea class="field" id="msg" maxlength="300">GG le top 1 ! Tu peux refaire le 180 de la fin ? 🔥</textarea></label>
+      <div>
+        <h2>Taille</h2>
+        <div class="seg" role="group" aria-label="La taille de l’image">
+          <button type="button" data-w="880" aria-pressed="true">Pour un format vertical</button>
+          <button type="button" data-w="1200" aria-pressed="false">Pour un format large</button>
+        </div>
+      </div>
+      <button type="button" class="btn" id="dl">Télécharger le PNG</button>
+      <p class="note" id="info" aria-live="polite"></p>
+    </div>
+    <div class="stage glass">
+      <div class="board"><canvas id="cv" role="img" aria-label="L’aperçu du message"></canvas></div>
+      <p class="note">Le damier n’est pas dans l’image : c’est le fond transparent.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="sign"><img src="../img/logo-ps.webp" width="256" height="150" alt=""><span>© PirAStack · <a href="/">pirastack.fr</a></span></div>
+    <p>Un outil gratuit, sans compte et sans envoi.</p>
+  </footer>
+</div>
+<script>
+const $ = s => document.querySelector(s), cv = $('#cv'), x = cv.getContext('2d');
+const COLS = ['#a970ff', '#00e5f0', '#ff0a8a', '#ffd166', '#36e27b', '#ff6b35', '#ffffff'];
+let W = 880;
+$('.swatches').innerHTML = COLS.map(c => `<button type="button" data-c="${c}" style="background:${c}" aria-label="Couleur ${c}" aria-pressed="${c === $('#col').value}"></button>`).join('');
+
+// La bulle : le pseudo en gras à sa couleur, le message en blanc, 5 lignes au plus (…), sur un fond sombre arrondi ; le reste est transparent
+function draw() {
+  const k = W / 880, P = 30 * k, LH = 56 * k, fs = 44 * k, F = 'system-ui, "Segoe UI", Roboto, sans-serif';
+  const who = ($('#who').value.trim() || 'Viewer') + ' : ', text = $('#msg').value.trim() || '…';
+  x.font = `700 ${fs}px ${F}`; const ww = x.measureText(who).width;
+  x.font = `500 ${fs}px ${F}`;
+  const lines = []; let cur = '', first = true;
+  for (const w of text.split(/\s+/)) {
+    const t = cur ? cur + ' ' + w : w, max = W - 2 * P - (first ? ww : 0);
+    if (x.measureText(t).width > max && cur) { lines.push(cur); cur = w; first = false; } else cur = t;
+  }
+  if (cur) lines.push(cur);
+  const L = lines.slice(0, 5); if (lines.length > 5) L[4] = L[4].replace(/\s*\S*$/, '…');
+  cv.width = W; cv.height = Math.round(P * 2 + LH * L.length);
+  x.clearRect(0, 0, cv.width, cv.height);
+  x.fillStyle = 'rgba(18,16,26,.92)'; x.beginPath(); x.roundRect(0, 0, cv.width, cv.height, 26 * k); x.fill();
+  x.strokeStyle = 'rgba(255,255,255,.14)'; x.lineWidth = 2; x.stroke();
+  x.textBaseline = 'top';
+  L.forEach((l, i) => {
+    let X = P;
+    if (!i) { x.font = `700 ${fs}px ${F}`; x.fillStyle = $('#col').value; x.fillText(who, X, P); X += ww; }
+    x.font = `500 ${fs}px ${F}`; x.fillStyle = '#fff'; x.fillText(l, X, P + i * LH);
+  });
+  $('#info').textContent = `Image de ${cv.width} × ${cv.height} px, fond transparent.`;
+  cv.setAttribute('aria-label', `L’aperçu : ${who}${text}`);
+}
+['who', 'msg', 'col'].forEach(id => $('#' + id).addEventListener('input', () => {
+  document.querySelectorAll('[data-c]').forEach(b => b.setAttribute('aria-pressed', b.dataset.c === $('#col').value));
+  draw();
+}));
+document.querySelectorAll('[data-c]').forEach(b => b.addEventListener('click', () => { $('#col').value = b.dataset.c; $('#col').dispatchEvent(new Event('input')); }));
+document.querySelectorAll('[data-w]').forEach(b => b.addEventListener('click', () => {
+  W = +b.dataset.w; document.querySelectorAll('[data-w]').forEach(o => o.setAttribute('aria-pressed', o === b)); draw();
+}));
+$('#dl').addEventListener('click', () => cv.toBlob(b => {
+  const a = document.createElement('a'), slug = $('#who').value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'viewer';
+  a.href = URL.createObjectURL(b); a.download = `message-${slug}.png`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}));
+draw();
+document.fonts?.ready.then(draw);
+</script>
+</body>
+</html>
